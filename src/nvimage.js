@@ -2372,7 +2372,12 @@ NVImage.loadFromUrl = async function ({
       urlImgData = url.substring(0, url.lastIndexOf("HEAD")) + "BRIK";
     }
   }
-  let urlParts = url.split("/"); // split url parts at slash
+  let urlParts
+  try {
+    urlParts = (new URL(url)).pathname.split("/");
+  } catch (e) {
+    urlParts = url.split("/");
+  }
   name = urlParts.slice(-1)[0]; // name will be last part of url (e.g. some/url/image.nii.gz --> image.nii.gz)
   let dataBuffer = await response.arrayBuffer();
   let pairedImgData = null;
